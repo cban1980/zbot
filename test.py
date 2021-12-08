@@ -17,6 +17,7 @@ def swedify(input):
     input = re.sub(r'Ã', 'Ä', input)
     input = re.sub(r'Ã', 'Ä', input)
     input = re.sub(r'Ä ', 'Ö', input)
+    input = re.sub(r'Â»', '', input)
     return input
 
 html = requests.get('https://exempelmeningar.se/sv/kebab').text

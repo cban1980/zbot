@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#-*- coding: utf-8 -*-
 import pydle
 import re
 from bs4 import BeautifulSoup as bs
@@ -87,8 +88,17 @@ class zbot(pydle.Client):
             await self.message(target, "{}: {}".format(nick, katt))
         elif "!mening" in msg:
             arg = msg.split(' ')[1]
-            mening = ircfunctions.mening(arg)
-            await self.message(target, "{}: {}".format(nick, mening))
+            mening = '(adsbygoogle = window.adsbygoogle || []).push({});'
+            while mening ==  '(adsbygoogle = window.adsbygoogle || []).push({});':
+                mening = ircfunctions.mening(arg)
+            else:
+                await self.message(target, "{}: {}".format(nick, mening))
+        elif "open.spotify.com" in msg:
+            arg = re.search("(?P<url>https?://[^\s]+)", msg).group("url")
+            music = ircfunctions.spot(arg)
+            music = music.replace('| Spotify', '')
+            await self.message(target, "{}'s Spotify link -> {}".format(nick, music))
+            
         
         
         

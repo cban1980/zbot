@@ -20,7 +20,14 @@ def swedify(input):
     input = re.sub(r'Ã¶', 'ö', input)
     input = re.sub(r'Ã¥', 'å', input)
     input = re.sub(r'Ã', 'Ä', input)
+    input = re.sub(r'Ã', 'Ä', input)
+    input = re.sub(r'Ä ', 'Ö', input)
+    input = re.sub(r'Â»', '', input)
+    input = re.sub(r'Â«', '', input)
     input = re.sub(r'â', '', input)
+    input = re.sub(r'â ¦', '', input)
+    input = re.sub(r'â   ', '', input)
+    
     return input
 
 def namnsdag():
@@ -82,6 +89,10 @@ def synonym(arg="None"):
             split_string = out.split("Användarna", 1)
             return split_string[0]
 
+def spot(arg):
+    html = requests.get('{}'.format(arg)).text
+    soup = bs(html, 'html5lib')
+    return soup.title.string
 
 def vader(arg):
     if arg:
