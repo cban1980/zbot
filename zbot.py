@@ -100,15 +100,6 @@ class zbot(pydle.Client):
             await self.message(target, "{}'s Spotify link -> {}".format(nick, music))
             
         
-        
-        
-                
-            
-            
-            
-
-
-
 client = zbot(name, username=uname, realname=rname)
 client.run(irc_server, tls=True, tls_verify=False, source_address=(src_ip, src_port))
 client.handle_forever()
