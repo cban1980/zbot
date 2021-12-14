@@ -9,6 +9,7 @@ import configparser
 import ircfunctions
 import time
 import asyncio
+import socket
 # Read values from configuration file. 
 config = configparser.ConfigParser()
 config.read(os.path.expanduser('~/zbot/bot.conf'))
@@ -22,6 +23,11 @@ rname = config.get('irc', 'rname', fallback='zb0t')
 zbot_chans = config.get('irc', 'channels')
 #This one wont work on a system with identd running.
 uname = config.get('irc', 'username', fallback='zb0t')
+# Variables for info and other things
+zBotVersion = "1.2"
+author = "zphinx"
+ircHost = socket.getfqdn()
+
 
 #Create the bot class.
 class zbot(pydle.Client):
@@ -78,7 +84,7 @@ class zbot(pydle.Client):
             arg2 = arg2.capitalize()
             vader = ircfunctions.vader(arg2)
             await self.message(target, "{}: {}".format(nick, vader))
-        elif by.startswith('Byis'):
+        elif by.lower().startswith('Byis'):
             pass
         elif "!sötkatt" in msg:
             katt = ircfunctions.sotkatt()
@@ -98,8 +104,8 @@ class zbot(pydle.Client):
             music = ircfunctions.spot(arg)
             music = music.replace('| Spotify', '')
             await self.message(target, "{}'s Spotify link -> {}".format(nick, music))
-        elif "!byis" in msg:
-            await self.message(target, 'Hej du!')
+        elif "!sv" in msg:
+            await self.message(target, 'Aktiv version {} av zbot, skriven av {}. Hostad på ({}).'.format(zBotVersion, author, ircHost))
         
 client = zbot(name, username=uname, realname=rname)
 client.run(irc_server, tls=True, tls_verify=False, source_address=(src_ip, src_port))
