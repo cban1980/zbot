@@ -69,7 +69,7 @@ class zbot(pydle.Client):
             f.close()
             if 'on' not in arg:
                 await zbot.synable()
-        elif msg.startswith('Byis:'):
+        elif msg.lower().startswith('byis:'):
             sadz = ircfunctions.sad()
             await self.message(target, "{}: {}".format(nick, sadz))
         elif "!väder" in msg:
