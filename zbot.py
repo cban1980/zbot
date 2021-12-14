@@ -98,7 +98,8 @@ class zbot(pydle.Client):
             music = ircfunctions.spot(arg)
             music = music.replace('| Spotify', '')
             await self.message(target, "{}'s Spotify link -> {}".format(nick, music))
-            
+        elif "!byis" in msg:
+            await self.message(target, 'Hej du!')
         
 client = zbot(name, username=uname, realname=rname)
 client.run(irc_server, tls=True, tls_verify=False, source_address=(src_ip, src_port))
