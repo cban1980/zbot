@@ -24,7 +24,7 @@ zbot_chans = config.get('irc', 'channels')
 #This one wont work on a system with identd running.
 uname = config.get('irc', 'username', fallback='zb0t')
 # Variables for info and other things
-zBotVersion = "1.2"
+zBotVersion = "1.3"
 author = "zphinx"
 ircHost = socket.getfqdn()
 
@@ -50,17 +50,17 @@ class zbot(pydle.Client):
     async def on_channel_message(self, target, by, message):
         msg = message
         nick = by
-        if "!bofh" in msg:
+        if msg.lower().startswith('!bofh'):
             boffy = ircfunctions.bofh()
             await self.message(target, "{}: {}".format(nick, boffy)) 
         elif "SaD" in nick:
             file = open("/home/zphinx/zbot/sad.txt", encoding='utf-8', mode='a')
             file.write(message + "\n")
             file.close() 
-        elif "!namnsdag" in msg:
+        elif msg.lower().startswith('!namnsdag'):
             namnsdag = ircfunctions.namnsdag()
             await self.message(target, "{}: {}".format(nick, namnsdag))
-        elif "!synonym" in msg:
+        elif msg.lower().startswith('!synonym'):
             with open('synset.txt') as f:
                 if 'on' in f.read():
                     arg = msg.split(' ')[1]
@@ -78,7 +78,7 @@ class zbot(pydle.Client):
         elif msg.lower().startswith('byis:'):
             sadz = ircfunctions.sad()
             await self.message(target, "{}: {}".format(nick, sadz))
-        elif "!väder" in msg:
+        elif msg.lower().startswith('!väder'):
             arg = msg.split(' ', 1)[1:]
             arg2 = ' '.join(arg)
             arg2 = arg2.capitalize()
@@ -86,13 +86,13 @@ class zbot(pydle.Client):
             await self.message(target, "{}: {}".format(nick, vader))
         elif by.lower().startswith('Byis'):
             pass
-        elif "!sötkatt" in msg:
+        elif msg.lower().startswith('!sötkatt'):
             katt = ircfunctions.sotkatt()
             await self.message(target, "{}: {}".format(nick, katt))
-        elif "!söthund" in msg:
+        elif msg.lower().startswith('!söthund'):
             katt = ircfunctions.sothund()
             await self.message(target, "{}: {}".format(nick, katt))
-        elif "!mening" in msg:
+        elif msg.lower().startswith('!mening'):
             arg = msg.split(' ')[1]
             mening = '(adsbygoogle = window.adsbygoogle || []).push({});'
             while mening ==  '(adsbygoogle = window.adsbygoogle || []).push({});':
@@ -104,9 +104,11 @@ class zbot(pydle.Client):
             music = ircfunctions.spot(arg)
             music = music.replace('| Spotify', '')
             await self.message(target, "{}'s Spotify link -> {}".format(nick, music))
-        elif "!sv" in msg:
-            await self.message(target, 'Aktiv version {} av zbot, skriven av {}. Hostad på ({}).'.format(zBotVersion, author, ircHost))
-        
+        elif msg.lower().startswith('!sv'):
+            await self.message(target, 'zbot v{}. Hostad på ({}). '.format(zBotVersion, ircHost))
+        elif msg.lower().startswith('!hjälp'):
+            await self.message(target, 'Kommandon är !väder, !synonym, !mening, !bofh, !söthund/!sötkatt och !namnsdag.')
+            
 client = zbot(name, username=uname, realname=rname)
 client.run(irc_server, tls=True, tls_verify=False, source_address=(src_ip, src_port))
 client.handle_forever()
