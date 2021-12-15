@@ -76,8 +76,12 @@ class zbot(pydle.Client):
             if 'on' not in arg:
                 await zbot.synable()
         elif msg.lower().startswith('byis:'):
-            sadz = ircfunctions.sad()
-            await self.message(target, "{}: {}".format(nick, sadz))
+            if by.lower().startswith('gerryn'):
+                gerr = ircfunctions.gerryn()
+                await self.message(target, "{}: {}".format(nick, gerr))
+            else:
+                sadz = ircfunctions.sad()
+                await self.message(target, "{}: {}".format(nick, sadz))
         elif msg.lower().startswith('!väder'):
             arg = msg.split(' ', 1)[1:]
             arg2 = ' '.join(arg)

@@ -56,6 +56,16 @@ def bofh():
         soppa = random.choice(soppa)
     return soppa
 
+def gerryn():
+    "Snuskiga svar till gerryn."
+    # Väldigt ful funktion, går säkert att fixa snyggare med bättre bs4 parse.
+    html = requests.get('https://www.fittkramp.se/svordom/sv/slumpat-ord/').text
+    soup = bs(html, 'html5lib')
+    svar = soup.findAll("div", class_ = "max75")
+    svar = str(svar)
+    svarlista = str(svar).split("<em>")
+    return cleanhtml(svarlista[1].strip("]").rstrip('\n'))
+    
 def mening(arg="None"):
     if arg == "None":
         return ("Var god ange ett ord...")
