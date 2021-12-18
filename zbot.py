@@ -12,7 +12,7 @@ import asyncio
 import socket
 # Read values from configuration file. 
 config = configparser.ConfigParser()
-config.read(os.path.expanduser('~/zbot/bot.conf'))
+config.read(os.path.expanduser('~/git/zbot/bot.conf'))
 # Get connection values
 src_ip = config.get('connection', 'source_ip', fallback='0.0.0.0')
 src_port = config.getint('connection', 'source_port', fallback=0)
@@ -24,7 +24,7 @@ zbot_chans = config.get('irc', 'channels')
 #This one wont work on a system with identd running.
 uname = config.get('irc', 'username', fallback='zb0t')
 # Variables for info and other things
-zBotVersion = "1.3"
+zBotVersion = "1.4"
 author = "zphinx"
 ircHost = socket.getfqdn()
 
@@ -77,7 +77,7 @@ class zbot(pydle.Client):
                 await zbot.synable()
         elif msg.lower().startswith('byis:'):
             if by.lower().startswith('gerryn'):
-                gerr = ircfunctions.gerryn()
+                gerr = ircfunctions.gerryn().rstrip()
                 await self.message(target, "{}: {}".format(nick, gerr))
             else:
                 sadz = ircfunctions.sad()

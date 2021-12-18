@@ -64,7 +64,8 @@ def gerryn():
     svar = soup.findAll("div", class_ = "max75")
     svar = str(svar)
     svarlista = str(svar).split("<em>")
-    return cleanhtml(svarlista[1].strip("]").rstrip('\n'))
+    svarlista = svarlista[1].strip("]")
+    return cleanhtml(svarlista)
     
 def mening(arg="None"):
     if arg == "None":
