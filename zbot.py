@@ -107,7 +107,7 @@ class zbot(pydle.Client):
             arg = re.search("(?P<url>https?://[^\s]+)", msg).group("url")
             music = ircfunctions.spot(arg)
             music = music.replace('| Spotify', '')
-            await self.message(target, "{}'s Spotify link -> {}".format(nick, music))
+            await self.message(target, "{}'s Spotify länk -> {}".format(nick, music))
         elif msg.lower().startswith('!sv'):
             await self.message(target, 'zbot v{}. Hostad på ({}). '.format(zBotVersion, ircHost))
         elif msg.lower().startswith('!hjälp'):
