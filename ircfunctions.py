@@ -390,6 +390,6 @@ def ipkoll(arg):
     stad = resp['city']
     isp = resp['isp']
     land = lander[landskod]
-    info = ("Land: {}. Stad: {}. ISP: {}".format(land, stad, isp))
+    info = ("Land: {}. Stad: {}. Ägare: {}".format(land, stad, isp))
     return info
     

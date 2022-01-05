@@ -115,7 +115,7 @@ class zbot(pydle.Client):
         elif msg.lower().startswith('!ipkoll'):
             arg = msg.split(' ')[1]
             info = ircfunctions.ipkoll(arg)
-            await self.message(target, info)
+            await self.message(target, "{}: {}".format(nick, info))
             
 client = zbot(name, username=uname, realname=rname)
 client.run(irc_server, tls=True, tls_verify=False, source_address=(src_ip, src_port))
