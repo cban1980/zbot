@@ -112,6 +112,10 @@ class zbot(pydle.Client):
             await self.message(target, 'zbot v{}. Hostad på ({}). '.format(zBotVersion, ircHost))
         elif msg.lower().startswith('!hjälp'):
             await self.message(target, 'Kommandon är !väder, !synonym, !mening, !bofh, !söthund/!sötkatt och !namnsdag.')
+        elif msg.lower().startswith('!ipkoll'):
+            arg = msg.split(' ')[1]
+            info = ircfunctions.ipkoll(arg)
+            await self.message(target, info)
             
 client = zbot(name, username=uname, realname=rname)
 client.run(irc_server, tls=True, tls_verify=False, source_address=(src_ip, src_port))

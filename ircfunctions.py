@@ -132,3 +132,14 @@ def sothund():
     hunden = htmldata.json()
     bild = hunden['message']
     return bild
+
+def ipkoll(arg):
+    """IP geolocation med https://ip-api.com/"""
+    htmldata = requests.get('http://ip-api.com/json/{}'.format(arg))
+    resp = htmldata.json()
+    land = resp['country']
+    stad = resp['city']
+    isp = resp['isp']
+    info = ("Land: {}. Stad: {}. ISP: {}".format(land, stad, isp))
+    return info
+    
