@@ -46,7 +46,11 @@ class zbot(pydle.Client):
         f = open("synset.txt", "w")
         f.write(str("on"))
         f.close()
-
+    
+    async def on_ctcp_version(self, by, target, contents):
+        version = "zbot {}".format(zBotVersion)
+        await self.ctcp_reply(by, 'VERSION', version)
+        
     async def on_channel_message(self, target, by, message):
         msg = message
         nick = by
@@ -57,6 +61,8 @@ class zbot(pydle.Client):
             file = open("/home/zphinx/zbot/sad.txt", encoding='utf-8', mode='a')
             file.write(message + "\n")
             file.close() 
+             sadz = ircfunctions.sad()
+            await self.message(target, "{}: {}".format(nick, sadz))
         elif msg.lower().startswith('!namnsdag'):
             namnsdag = ircfunctions.namnsdag()
             await self.message(target, "{}: {}".format(nick, namnsdag))
@@ -116,6 +122,10 @@ class zbot(pydle.Client):
             arg = msg.split(' ')[1]
             info = ircfunctions.ipkoll(arg)
             await self.message(target, "{}: {}".format(nick, info))
+        elif msg.lower().startswith('!whois'):
+            subject = await self.whois(by)
+            await self.message(target, "{}: {}".format(nick, subject))
+            
             
 client = zbot(name, username=uname, realname=rname)
 client.run(irc_server, tls=True, tls_verify=False, source_address=(src_ip, src_port))
