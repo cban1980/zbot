@@ -2666,3 +2666,107 @@ Unknown command: [services.dal.net] 328 ['Byis', '#nightfly', 'www.nightfly.nu']
 >> Receive timeout reached, sending ping to check connection state...
 >> Receive timeout reached, sending ping to check connection state...
 >> Receive timeout reached, sending ping to check connection state...
+Unknown command: [services.dal.net] 328 ['Byis', '#nightfly', 'www.nightfly.nu']
+>> Receive timeout reached, sending ping to check connection state...
+>> Receive timeout reached, sending ping to check connection state...
+>> Receive timeout reached, sending ping to check connection state...
+Failed to execute on_raw_privmsg handler.
+Traceback (most recent call last):
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/client.py", line 422, in on_raw
+    await handler(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/ctcp.py", line 77, in on_raw_privmsg
+    await super().on_raw_privmsg(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/rfc1459/client.py", line 714, in on_raw_privmsg
+    await self.on_channel_message(target, nick, message)
+  File "./zbot.py", line 117, in on_channel_message
+    info = ircfunctions.ipkoll(arg)
+  File "/home/zphinx/git/zbot/ircfunctions.py", line 140, in ipkoll
+    land = resp['country']
+KeyError: 'country'
+Failed to execute on_raw_privmsg handler.
+Traceback (most recent call last):
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/client.py", line 422, in on_raw
+    await handler(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/ctcp.py", line 77, in on_raw_privmsg
+    await super().on_raw_privmsg(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/rfc1459/client.py", line 714, in on_raw_privmsg
+    await self.on_channel_message(target, nick, message)
+  File "./zbot.py", line 117, in on_channel_message
+    info = ircfunctions.ipkoll(arg)
+  File "/home/zphinx/git/zbot/ircfunctions.py", line 140, in ipkoll
+    land = resp['country']
+KeyError: 'country'
+Failed to execute on_raw_privmsg handler.
+Traceback (most recent call last):
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/client.py", line 422, in on_raw
+    await handler(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/ctcp.py", line 77, in on_raw_privmsg
+    await super().on_raw_privmsg(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/rfc1459/client.py", line 714, in on_raw_privmsg
+    await self.on_channel_message(target, nick, message)
+  File "./zbot.py", line 117, in on_channel_message
+    info = ircfunctions.ipkoll(arg)
+  File "/home/zphinx/git/zbot/ircfunctions.py", line 140, in ipkoll
+    land = resp['country']
+KeyError: 'country'
+Failed to execute on_raw_privmsg handler.
+Traceback (most recent call last):
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/client.py", line 422, in on_raw
+    await handler(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/ctcp.py", line 77, in on_raw_privmsg
+    await super().on_raw_privmsg(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/rfc1459/client.py", line 714, in on_raw_privmsg
+    await self.on_channel_message(target, nick, message)
+  File "./zbot.py", line 117, in on_channel_message
+    info = ircfunctions.ipkoll(arg)
+  File "/home/zphinx/git/zbot/ircfunctions.py", line 140, in ipkoll
+    land = resp['country']
+KeyError: 'country'
+Failed to execute on_raw_privmsg handler.
+Traceback (most recent call last):
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/client.py", line 422, in on_raw
+    await handler(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/ctcp.py", line 77, in on_raw_privmsg
+    await super().on_raw_privmsg(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/rfc1459/client.py", line 714, in on_raw_privmsg
+    await self.on_channel_message(target, nick, message)
+  File "./zbot.py", line 117, in on_channel_message
+    info = ircfunctions.ipkoll(arg)
+  File "/home/zphinx/git/zbot/ircfunctions.py", line 140, in ipkoll
+    land = resp['country']
+KeyError: 'country'
+Failed to execute on_raw_privmsg handler.
+Traceback (most recent call last):
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/client.py", line 422, in on_raw
+    await handler(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/ctcp.py", line 77, in on_raw_privmsg
+    await super().on_raw_privmsg(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/rfc1459/client.py", line 714, in on_raw_privmsg
+    await self.on_channel_message(target, nick, message)
+  File "./zbot.py", line 117, in on_channel_message
+    info = ircfunctions.ipkoll(arg)
+  File "/home/zphinx/git/zbot/ircfunctions.py", line 140, in ipkoll
+    land = resp['country']
+KeyError: 'country'
+Failed to execute on_raw_privmsg handler.
+Traceback (most recent call last):
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/client.py", line 422, in on_raw
+    await handler(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/ctcp.py", line 77, in on_raw_privmsg
+    await super().on_raw_privmsg(message)
+  File "/home/zphinx/zbot/lib/python3.5/site-packages/pydle/features/rfc1459/client.py", line 714, in on_raw_privmsg
+    await self.on_channel_message(target, nick, message)
+  File "./zbot.py", line 117, in on_channel_message
+    info = ircfunctions.ipkoll(arg)
+  File "/home/zphinx/git/zbot/ircfunctions.py", line 140, in ipkoll
+    land = resp['country']
+KeyError: 'country'
+>> Receive timeout reached, sending ping to check connection state...
+>> Receive timeout reached, sending ping to check connection state...
+>> Receive timeout reached, sending ping to check connection state...
+>> Receive timeout reached, sending ping to check connection state...
+>> Receive timeout reached, sending ping to check connection state...
+>> Receive timeout reached, sending ping to check connection state...
+>> Receive timeout reached, sending ping to check connection state...
+>> Receive timeout reached, sending ping to check connection state...
+>> Receive timeout reached, sending ping to check connection state...
