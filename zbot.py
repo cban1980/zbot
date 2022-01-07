@@ -24,7 +24,7 @@ zbot_chans = config.get('irc', 'channels')
 #This one wont work on a system with identd running.
 uname = config.get('irc', 'username', fallback='zb0t')
 # Variables for info and other things
-zBotVersion = "1.4"
+zBotVersion = "1.5"
 author = "zphinx"
 ircHost = socket.getfqdn()
 
@@ -61,8 +61,9 @@ class zbot(pydle.Client):
             file = open("/home/zphinx/zbot/sad.txt", encoding='utf-8', mode='a')
             file.write(message + "\n")
             file.close() 
-             sadz = ircfunctions.sad()
-            await self.message(target, "{}: {}".format(nick, sadz))
+            if msg.lower().startswith('byis:'):
+                sadz = ircfunctions.sad()
+                await self.message(target, "{}: {}".format(nick, sadz))
         elif msg.lower().startswith('!namnsdag'):
             namnsdag = ircfunctions.namnsdag()
             await self.message(target, "{}: {}".format(nick, namnsdag))
@@ -117,15 +118,46 @@ class zbot(pydle.Client):
         elif msg.lower().startswith('!sv'):
             await self.message(target, 'zbot v{}. Hostad på ({}). '.format(zBotVersion, ircHost))
         elif msg.lower().startswith('!hjälp'):
-            await self.message(target, 'Kommandon är !väder, !synonym, !mening, !bofh, !ipkoll, !söthund/!sötkatt och !namnsdag.')
+            await self.message(target, 'Kommandon är !väder, !tv, !synonym, !mening, !bofh, !ipkoll, !söthund/!sötkatt och !namnsdag.')
         elif msg.lower().startswith('!ipkoll'):
             arg = msg.split(' ')[1]
             info = ircfunctions.ipkoll(arg)
             await self.message(target, "{}: {}".format(nick, info))
-        elif msg.lower().startswith('!whois'):
-            subject = await self.whois(by)
-            await self.message(target, "{}: {}".format(nick, subject))
-            
+        elif msg.lower().startswith('!tv'):
+            kanaler = ["al-jazeera", "animal-planet", "atg-live", "axess-tv",
+               "barnkanalen", "bbc-brit", "bbc-earth", "bbc-world-news",
+               "bloomberg", "boomerang", "c-more-first", "c-more-first-hd",
+               "c-more-fotboll", "c-more-golf", "c-more-hits", "c-more-hockey",
+               "c-more-live", "c-more-live-2","c-more-live-3", "c-more-live-4",
+               "c-more-live-5", "c-more-series", "c-more-sf", "c-more-stars",
+               "cartoon-network", "cbs-reality", "cnbc", "cnn", "curiositystream", 
+               "di-tv", "discovery-channel", "dr1", "dr2", "e", "euronews", 
+               "eurosport", "eurosport-hd", "extreme-sports", "fashion-tv", 
+               "fight-sports", "fuel-tv", "godare", "h2", "history-channel",
+               "history-channel-hd", "horse-and-country", "kanal-10", "kanal-4",
+               "kanal-5", "kanal-9", "kunskapskanalen", "mezzo", "mezzo-live-hd",
+               "motorvision-tv", "mtv", "mtv-80s", "mtv-90s", "mtv-dance", "mtv-hits",
+               "mtv-live-hd", "national-geo-wild", "national-geografic-hd",
+               "national-geographic", "nautical-channel", "nick-jr", "nick-toons",
+               "nickelodeon", "nrk-1", "nrk-2", "nrk-3", "outdoor-channel",
+               "outtv", "paramount-network", "rt-news", "sjuan", "sky-news",
+               "sportkanalen", "svt1", "svt1-hd", "svt2", "svt2-hd", "svt24",
+               "tlc", "travel", "tv-finland", "tv-norge", "tv10", "tv12",
+               "tv2-danmark", "tv3-norge", "tv4", "tv4-fakta", "tv4-film",
+               "tv4-guld", "tv4-hd", "tv6", "tv8", "vh-1", "viasat-explore",
+               "viasat-film-action", "viasat-film-family", "viasat-film-hits",
+               "viasat-film-premier", "viasat-film-premier-hd", "viasat-fotboll",
+               "viasat-golf", "viasat-history", "viasat-hockey", "viasat-motor",
+               "viasat-nature", "viasat-series", "viasat-sport-extra",
+               "viasat-premium", "viasat-ultra-hd", "yle-tv1", "yle-tv2"]
+            arg = msg.split(' ')[1]
+            if arg == 'lista':
+                await self.notice(nick, ", ".join(kanaler))
+            elif not arg in kanaler:
+                await self.message(target, "{}: Ej sökbar/existerande kanal, skriv !tv lista för en (stor!) lista i notice".format(nick))
+            else:
+                tvnu = ircfunctions.tv(arg)
+                await self.message(target, "{}: {}".format(nick, tvnu))
             
 client = zbot(name, username=uname, realname=rname)
 client.run(irc_server, tls=True, tls_verify=False, source_address=(src_ip, src_port))

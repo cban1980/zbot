@@ -392,4 +392,15 @@ def ipkoll(arg):
     land = lander[landskod]
     info = ("Land: {}. Stad: {}. Ägare: {}".format(land, stad, isp))
     return info
-    
+
+def tv(arg):
+        url = requests.get('https://www.allatvkanaler.se/tabla/{}/idag'.format(arg)).text
+        soup = bs(url, 'html.parser')
+        data = soup.find('p',attrs={'class':'cur lead'})      
+        if data is None:
+            return ("Inget för tillfället... ")
+        else:
+            cur = data.find('b',attrs={'class':'fvs'})
+            time = cleanhtml(str(data))
+            show = cleanhtml(str(cur)) 
+            return "{}. Började: {}".format(show, time.split()[0])
