@@ -8,10 +8,15 @@ import random
 import re
 import json
 import cfscrape
+import goslate
+
 
 def cleanhtml(raw_html):
     cleanr = re.compile('<.*?>')
     cleantext = re.sub(cleanr, '', raw_html)
+    cleantext = cleantext.replace("&lt;", "<")
+    cleantext = cleantext.replace("&gt;", ">")
+    cleantext = cleantext.replace("&amp;", "&")
     " ".join(map(str, cleantext))
     return cleantext
 
@@ -400,7 +405,11 @@ def tv(arg):
         if data is None:
             return ("Inget för tillfället... ")
         else:
+            deflead = soup.find('p',attrs={'class':'def lead'})
             cur = data.find('b',attrs={'class':'fvs'})
             time = cleanhtml(str(data))
             show = cleanhtml(str(cur)) 
-            return "{}. Började: {}".format(show, time.split()[0])
+            end = cleanhtml(str(deflead))
+            return "{}. {} -> {}.".format(show, time.split()[0], end.split()[0])
+
+    
