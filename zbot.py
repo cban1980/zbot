@@ -193,7 +193,7 @@ class zbot(pydle.Client):
             else:
                 tvnu = ircfunctions.tv(arg)
                 await self.message(target, "{}: {}".format(nick, tvnu))
-                logger.info('{} använde !tv för kanalen'.format(nick, arg)) 
+                logger.info('{} använde !tv för kanalen {}.'.format(nick, arg, tvnu)) 
 
 ###
 # Initialization of pydle object.
