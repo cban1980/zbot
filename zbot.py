@@ -21,24 +21,30 @@ irc_server = config.get('connection', 'irc_server', fallback='irc.dal.net')
 name = config.get('irc', 'nickname', fallback='zb0t')
 rname = config.get('irc', 'rname', fallback='zb0t')
 zbot_chans = config.get('irc', 'channels')
-#This one wont work on a system with identd running.
+# This one wont work on a system with identd running.
 uname = config.get('irc', 'username', fallback='zb0t')
 # Variables for info and other things
 zBotVersion = "1.5"
 author = "zphinx"
 ircHost = socket.getfqdn()
 
+###
+# Non pydle functions.
+### 
 
-#Create the bot class.
+def cleanhtml(raw_html):
+    cleanr = re.compile('<.*?>')
+    cleantext = re.sub(cleanr, '', raw_html)
+    return cleantext
+
+###
+# Pydle class and functions.
+###
+
 class zbot(pydle.Client):
     """zbot, a stupid simple IRC bot"""
     async def on_connect(self):
         await self.join(zbot_chans)
-        
-    def cleanhtml(raw_html):
-        cleanr = re.compile('<.*?>')
-        cleantext = re.sub(cleanr, '', raw_html)
-        return cleantext
     
     async def synable():
         await asyncio.sleep(1800)
@@ -50,7 +56,11 @@ class zbot(pydle.Client):
     async def on_ctcp_version(self, by, target, contents):
         version = "zbot {}".format(zBotVersion)
         await self.ctcp_reply(by, 'VERSION', version)
-        
+
+###
+# on_channe_message event to handle commands.
+###
+
     async def on_channel_message(self, target, by, message):
         msg = message
         nick = by
@@ -158,7 +168,11 @@ class zbot(pydle.Client):
             else:
                 tvnu = ircfunctions.tv(arg)
                 await self.message(target, "{}: {}".format(nick, tvnu))
-            
+
+###
+# Initialization of pydle object.
+###
+        
 client = zbot(name, username=uname, realname=rname)
 client.run(irc_server, tls=True, tls_verify=False, source_address=(src_ip, src_port))
 client.handle_forever()
