@@ -22,6 +22,7 @@ irc_server = config.get('connection', 'irc_server', fallback='irc.dal.net')
 name = config.get('irc', 'nickname', fallback='zb0t')
 rname = config.get('irc', 'rname', fallback='zb0t')
 zbot_chans = config.get('irc', 'channels')
+
 # This one wont work on a system with identd running.
 uname = config.get('irc', 'username', fallback='zb0t')
 # Variables for info and other things
@@ -114,7 +115,7 @@ class zbot(pydle.Client):
             else:
                 sadz = ircfunctions.sad()
                 await self.message(target, "{}: {}".format(nick, sadz))
-                logger.info('{} talade med mig i {}'.format(nick, target)) 
+                logger.info('{} talade med mig.'.format(nick)) 
         elif msg.lower().startswith('!väder'):
             arg = msg.split(' ', 1)[1:]
             arg2 = ' '.join(arg)
