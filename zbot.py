@@ -58,7 +58,7 @@ class zbot(pydle.Client):
         await self.ctcp_reply(by, 'VERSION', version)
 
 ###
-# on_channe_message event to handle commands.
+# on_channel_message event to handle commands. Functions pulled from ircfunctions.py
 ###
 
     async def on_channel_message(self, target, by, message):
