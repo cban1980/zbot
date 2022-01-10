@@ -8,7 +8,6 @@ import random
 import re
 import json
 import cfscrape
-import goslate
 
 
 def cleanhtml(raw_html):
