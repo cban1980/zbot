@@ -22,7 +22,6 @@ irc_server = config.get('connection', 'irc_server', fallback='irc.dal.net')
 name = config.get('irc', 'nickname', fallback='zb0t')
 rname = config.get('irc', 'rname', fallback='zb0t')
 zbot_chans = config.get('irc', 'channels')
-admins = config.get('irc', 'admins')
 # This one wont work on a system with identd running.
 uname = config.get('irc', 'username', fallback='zb0t')
 # Variables for info and other things
