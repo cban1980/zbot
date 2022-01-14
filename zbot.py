@@ -75,18 +75,18 @@ class zbot(pydle.Client):
     async def on_channel_message(self, target, by, message):
         msg = message
         nick = by
+        file = open("/c/Users/cban/git/zbot/chat.txt", encoding='utf-8', mode='a')
+        words = msg.partition(" ")
+        file.write( words + "\n")
+        file.close() 
         if msg.lower().startswith('!bofh'):
             boffy = ircfunctions.bofh()
             await self.message(target, "{}: {}".format(nick, boffy))
             logger.info('{} använde !bofh'.format(nick)) 
-        elif "SaD" in nick:
-            file = open("/home/zphinx/zbot/sad.txt", encoding='utf-8', mode='a')
-            file.write(message + "\n")
-            file.close() 
-            if msg.lower().startswith('byis:'):
-                sadz = ircfunctions.sad()
-                await self.message(target, "{}: {}".format(nick, sadz))
-                logger.info('{} samtalade med mig'.format(nick)) 
+        if msg.lower().startswith('byis:'):
+            chat = ircfunctions.chat()
+            await self.message(target, "{}: {}".format(nick, chat))
+            logger.info('{} samtalade med mig'.format(nick)) 
         elif msg.lower().startswith('!namnsdag'):
             namnsdag = ircfunctions.namnsdag()
             await self.message(target, "{}: {}".format(nick, namnsdag))

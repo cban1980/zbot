@@ -41,9 +41,9 @@ def namnsdag():
     return dagens
 
 
-def sad():
+def chat():
     """markovify things sad say"""
-    with open("/home/zphinx/zbot/sad.txt", "r", encoding="utf-8") as f:
+    with open("/home/zphinx/zbot/chat", "r", encoding="utf-8") as f:
         text = f.read()
         model = markovify.NewlineText(text, well_formed=False)
         chain = model.make_sentence(tries=100, state_size=120)
