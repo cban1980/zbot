@@ -8,7 +8,9 @@ import random
 import re
 import json
 import cfscrape
-
+import feedparser
+from googletrans import Translator
+ab_rss = "https://rss.aftonbladet.se/rss2/small/pages/sections/senastenytt/"
 
 def cleanhtml(raw_html):
     cleanr = re.compile('<.*?>')
@@ -40,10 +42,15 @@ def namnsdag():
     dagens = soup.find('h1').getText()
     return dagens
 
+def tr(fran, till, mening):
+    """Translation function."""
+    translator = Translator()
+    translation = translator.translate(mening, src=fran, dest=till)
+    return translation.text
 
 def chat():
-    """markovify things sad say"""
-    with open("/home/zphinx/zbot/chat", "r", encoding="utf-8") as f:
+    """return random markovify string when spoken to."""
+    with open("/home/zphinx/zbot/chat.txt", "r", encoding="utf-8") as f:
         text = f.read()
         model = markovify.NewlineText(text, well_formed=False)
         chain = model.make_sentence(tries=100, state_size=120)
@@ -70,7 +77,17 @@ def gerryn():
     svarlista = str(svar).split("<em>")
     svarlista = svarlista[1].strip("]")
     return cleanhtml(svarlista)
-    
+
+def lk():
+    "En lyckokaka."
+    html = requests.get('http://www.fortunecookiemessage.com/').text
+    soup = bs(html, 'html5lib')
+    svar = soup.findAll("div", class_ = "quote")
+    svar = cleanhtml(str(svar))
+    translator = Translator()
+    translation = translator.translate(svar, src="en", dest="sv")
+    return translation.text.strip("[]")
+
 def mening(arg="None"):
     if arg == "None":
         return ("Var god ange ett ord...")
@@ -400,15 +417,33 @@ def ipkoll(arg):
 def tv(arg):
         url = requests.get('https://www.allatvkanaler.se/tabla/{}/idag'.format(arg)).text
         soup = bs(url, 'html.parser')
-        data = soup.find('p',attrs={'class':'cur lead'})      
+        data = soup.find('p',attrs={'class':'is-clearfix cur lead'})      
         if data is None:
             return ("Inget för tillfället... ")
         else:
-            deflead = soup.find('p',attrs={'class':'def lead'})
+            info = data.find_next_sibling('p')
             cur = data.find('b',attrs={'class':'fvs'})
             time = cleanhtml(str(data))
             show = cleanhtml(str(cur)) 
-            end = cleanhtml(str(deflead))
-            return "{}. {} -> {}.".format(show, time.split()[0], end.split()[0])
+            info = cleanhtml(str(info))
+            return "{}. {} ~> {}".format(show, time.split()[0],info)
 
-    
+
+
+
+def nyheter():
+    ab_rss = "https://rss.aftonbladet.se/rss2/small/pages/sections/senastenytt/"
+    exp_rss = "https://feeds.expressen.se/nyheter/"
+    dn_rss = "https://www.dn.se/rss/"
+    ab_feed = feedparser.parse(ab_rss)
+    exp_feed = feedparser.parse(exp_rss)
+    dn_feed = feedparser.parse(dn_rss)
+    abtitel = ab_feed.entries[0].title
+    ablank = ab_feed.entries[0].link
+    exptitle = exp_feed.entries[0].title
+    explank = exp_feed.entries[0].link
+    dntitle = dn_feed.entries[0].title
+    dnlank = dn_feed.entries[0].link
+    return """📰 Aftonbladet: {} ~> <🔗{}>
+📰 Expressen: {} ~> <🔗{}>
+📰 Dagens Nyheter: {} ~> <🔗{}>""".format(abtitel, ablank, exptitle, explank, dntitle, dnlank)

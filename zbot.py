@@ -13,11 +13,11 @@ import socket
 import logging
 # Read values from configuration file. 
 config = configparser.ConfigParser()
-config.read(os.path.expanduser('~/git/zbot/bot.conf'))
+config.read(os.path.expanduser('~/zbot/bot.conf'))
 # Get connection values
 src_ip = config.get('connection', 'source_ip', fallback='0.0.0.0')
 src_port = config.getint('connection', 'source_port', fallback=0)
-irc_server = config.get('connection', 'irc_server', fallback='irc.dal.net')
+irc_server = config.get('connection', 'irc_server', fallback='eu.dal.net')
 # Get values for channels and such when connected.
 name = config.get('irc', 'nickname', fallback='zb0t')
 rname = config.get('irc', 'rname', fallback='zb0t')
@@ -26,9 +26,10 @@ zbot_chans = config.get('irc', 'channels')
 # This one wont work on a system with identd running.
 uname = config.get('irc', 'username', fallback='zb0t')
 # Variables for info and other things
-zBotVersion = "1.5"
+zBotVersion = "1.7"
 author = "zphinx"
 ircHost = socket.getfqdn()
+bots = ['DALnet', 'NickServ', 'ChanServ', 'Byis', 'PekingBot', 'Ekdahl']
 # Set logging parameters
 Log_Format = "%(levelname)s %(asctime)s - %(message)s"
 logging.basicConfig(filename = "logfile.log",
@@ -75,11 +76,15 @@ class zbot(pydle.Client):
     async def on_channel_message(self, target, by, message):
         msg = message
         nick = by
-        file = open("/c/Users/cban/git/zbot/chat.txt", encoding='utf-8', mode='a')
-        words = msg.partition(" ")
-        file.write( words + "\n")
-        file.close() 
-        if msg.lower().startswith('!bofh'):
+        # So we dont collect short sentences.
+        wordcount = msg.split()
+        if len(wordcount) > 6:
+            if nick not in bots:
+                file = open("/home/zphinx/zbot/chat.txt", encoding='utf-8', mode='a')
+                words = ' '.join(msg.split()[1:])
+                file.write(words + "\n")
+                file.close() 
+        elif msg.lower().startswith('!bofh'):
             boffy = ircfunctions.bofh()
             await self.message(target, "{}: {}".format(nick, boffy))
             logger.info('{} använde !bofh'.format(nick)) 
@@ -129,17 +134,27 @@ class zbot(pydle.Client):
             katt = ircfunctions.sotkatt()
             await self.message(target, "{}: {}".format(nick, katt))
             logger.info('{} använde !sötkatt'.format(nick)) 
+        elif msg.lower().startswith('!nyheter'):
+            feed = ircfunctions.nyheter()
+            await self.message(target, "{}".format(feed))
+            logger.info('{} använde !sötkatt'.format(nick)) 
         elif msg.lower().startswith('!söthund'):
             katt = ircfunctions.sothund()
             await self.message(target, "{}: {}".format(nick, katt))
             logger.info('{} använde !söthund'.format(nick)) 
+        elif msg.lower().startswith('!tr'):
+            fran = msg.split(' ')[1]
+            till = msg.split(' ')[2]
+            mening = msg.partition(till)[2]
+            oversattning = ircfunctions.tr(fran, till, mening)
+            await self.message(target, "{}: {}".format(nick, oversattning))
         elif msg.lower().startswith('!mening'):
             arg = msg.split(' ')[1]
             mening = '(adsbygoogle = window.adsbygoogle || []).push({});'
             while mening ==  '(adsbygoogle = window.adsbygoogle || []).push({});':
                 mening = ircfunctions.mening(arg)
             else:
-                await self.message(target, "{}: {}".format(nick, arg))
+                await self.message(target, "{}: {}".format(nick, mening))
                 logger.info('{} använde !mening for ordet {}.'.format(nick, mening)) 
         elif "open.spotify.com" in msg:
             arg = re.search("(?P<url>https?://[^\s]+)", msg).group("url")
@@ -151,13 +166,19 @@ class zbot(pydle.Client):
             await self.message(target, 'zbot v{}. Hostad på ({}). '.format(zBotVersion, ircHost))
             logger.info('{} använde !sv'.format(nick)) 
         elif msg.lower().startswith('!hjälp'):
-            await self.message(target, 'Kommandon är !väder, !tv, !synonym, !mening, !bofh, !ipkoll, !söthund/!sötkatt och !namnsdag.')
+            await self.message(target, 'Kommandon är !väder <stad>, !tv <kanal>, !synonym <ord>, !mening <ord>, !bofh, !nyheter, !ipkoll <host>, !söthund/!sötkatt, !tr (översättning) <från> <till> <mening>,!namnsdag och !lk för en lyckokaka.')
+            logger.info('{} använde !hjälp'.format(nick)) 
+        elif msg.lower().startswith('!help'):
+            await self.message(target, 'Commands are !väder <city>, !tv <channel>, !synonym <word>, !mening <word>, !bofh, !nyheter, !ipkoll <host>, !söthund/!sötkatt, !tr (translation) <from> <to> <sentence>,!namnsdag and !lk for a swedish fortune cookie.')
             logger.info('{} använde !hjälp'.format(nick)) 
         elif msg.lower().startswith('!ipkoll'):
             arg = msg.split(' ')[1]
             info = ircfunctions.ipkoll(arg)
             await self.message(target, "{}: {}".format(nick, info))
-            logger.info('{} använde !ipkoll på {}'.format(nick, arg)) 
+            logger.info('{} använde !ipkoll på {}'.format(nick, arg))
+        elif msg.lower().startswith('!lk'):
+            lk = ircfunctions.lk()
+            await self.message(target, "{}'s lyckokaka: {}".format(nick, lk))
         elif msg.lower().startswith('!tv'):
             kanaler = ["al-jazeera", "animal-planet", "atg-live", "axess-tv",
                "barnkanalen", "bbc-brit", "bbc-earth", "bbc-world-news",
@@ -184,7 +205,7 @@ class zbot(pydle.Client):
                "viasat-film-premier", "viasat-film-premier-hd", "viasat-fotboll",
                "viasat-golf", "viasat-history", "viasat-hockey", "viasat-motor",
                "viasat-nature", "viasat-series", "viasat-sport-extra",
-               "viasat-premium", "viasat-ultra-hd", "yle-tv1", "yle-tv2"]
+               "viasat-premium", "viasat-ultra-hd", "yle-tv1", "yle-tv2", "tv3"]
             arg = msg.split(' ')[1]
             if arg == 'lista':
                 await self.notice(nick, ", ".join(kanaler))
